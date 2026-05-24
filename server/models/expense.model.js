@@ -1,13 +1,29 @@
 import mongoose from "mongoose";
 const expenseSchema=new mongoose.Schema({
-    descriptipn:String,
+    description:{
+        type:String,
+        required:true
+    },
     amount:{
         type:Number,
         required:true
     },
-    category:{
-        type:String
-    },
+   category: {
+    type: String,
+    enum: [
+        "Food",
+        "Travel",
+        "Shopping",
+        "Bills",
+        "Entertainment",
+        "Health",
+        "Education",
+        "Salary",
+        "Investment",
+        "Other"
+    ],
+    required: true
+},
     date:{
         type:Date,
         default:Date.now

@@ -12,7 +12,7 @@ const isAuth=(req,res,next)=>{
         if(!verifyToken){
             return res.status(401).json({message:"Unauthorized"});
         }
-        req.userID=verifyToken.id;
+        req.userId=verifyToken.userId;
         next();
     }catch(error){
         console.log(error);
