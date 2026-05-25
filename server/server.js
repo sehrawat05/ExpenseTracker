@@ -21,7 +21,6 @@ app.get('/', (req, res) => {
 });
 app.use('/api/auth', authRouter);
 app.use('/api/expense', expenseRouter);
-
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);
 });
