@@ -3,12 +3,15 @@ import { useForm } from 'react-hook-form'
 import { IoMdArrowBack } from "react-icons/io";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { authDataContext } from '../context/AuthContext'
+import { useContext } from 'react'
 const SignUp = () => {
     const navigate = useNavigate();
+    const { serverUrl } = useContext(authDataContext);
     const {
         register,
         handleSubmit,
-        formState: { errors }, // You have errors here, let's use them!
+        formState: { errors },
         reset,
     } = useForm();
 
@@ -17,11 +20,18 @@ const SignUp = () => {
             console.log("Sending data:", data);
 
             const res = await axios.post(
-                "http://localhost:8000/api/auth/signup",
-                data
+                `${serverUrl}/api/auth/signup`,
+                data, {
+                withCredentials: true
+            }
             );
 
             console.log("SUCCESS RESPONSE:", res.data);
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(user)
+            );
             alert("Signup successful!");
             navigate("/");
             reset();

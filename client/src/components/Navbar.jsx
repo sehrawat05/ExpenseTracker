@@ -1,8 +1,34 @@
 import React from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { authDataContext } from '../context/AuthContext'
+import { useContext } from 'react'
 const Navbar = () => {
     const navigate = useNavigate()
+    const { serverUrl } = useContext(authDataContext);
+    const user = JSON.parse(
+        localStorage.getItem("user")
+    );
+    const [userData, setUserData] = useState(user);
+    const userId = userData?._id;
+    const onSubmit = async () => {
+        try {
+            const res = await axios.post(
+                `${serverUrl}/api/auth/logout`
+            );
+            console.log("SUCCESS RESPONSE:", res.data);
+            localStorage.removeItem("user");
+            setUserData(null);
+            alert("Logout successful!");
+        } catch (error) {
+            console.log("ERROR FULL:", error);
+            console.log("ERROR RESPONSE:", error.response?.data);
+        }
+    }
+
     return (
+
         <nav className="w-full bg-gradient-to-r from-purple-700 via-violet-600 to-fuchsia-600 shadow-lg">
             <div className="w-full px-7 mx-auto py-4 flex items-center justify-between">
 
@@ -19,7 +45,7 @@ const Navbar = () => {
                 </h1>
 
                 {/* Buttons */}
-                <div className="flex items-center gap-4">
+                {(!userId && <div className="flex items-center gap-4">
                     <button className="px-5 py-2 rounded-xl border border-white text-white font-medium hover:bg-white hover:text-purple-700 transition-all duration-300" onClick={() => navigate(
                         "/login"
                     )}>
@@ -29,8 +55,20 @@ const Navbar = () => {
                     <button className="px-5 py-2 rounded-xl bg-white text-purple-700 font-semibold hover:scale-105 transition-all duration-300 shadow-md" onClick={() => navigate("/signup")}>
                         Sign Up
                     </button>
-                </div>
+                </div>)
+                }
+                {(userId && <div className="flex items-center gap-4">
+                    <button className="px-5 py-2 rounded-xl border border-white text-white font-medium hover:bg-white hover:text-purple-700 transition-all duration-300" onClick={() => {
+                        onSubmit();
+                        navigate("/");
 
+                    }}>
+                        Logout
+                    </button>
+
+
+                </div>)
+                }
             </div>
         </nav>
     )

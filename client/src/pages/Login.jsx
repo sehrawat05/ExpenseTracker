@@ -2,6 +2,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { IoMdArrowBack } from "react-icons/io";
 import axios from 'axios';
+import { authDataContext } from '../context/AuthContext'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ const Login = () => {
         formState: { errors },
         reset,
     } = useForm();
+    const { serverUrl } = useContext(authDataContext);
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -18,10 +21,19 @@ const Login = () => {
         // later connect backend here
         try {
             const res = await axios.post(
-                "http://localhost:8000/api/auth/login",
-                data
+                `${serverUrl}/api/auth/login`,
+                data, {
+                withCredentials: true
+            }
             );
             console.log("SUCCESS RESPONSE:", res.data);
+            const user = res.data.user;
+            console.log(user);
+            localStorage.setItem(
+                "user",
+                JSON.stringify(user)
+            );
+            // localStorage.setItem("user", user);
             alert("Login successful!");
             navigate("/");
             reset();
@@ -74,7 +86,7 @@ const Login = () => {
                         {/* Password */}
                         <div>
                             <label className="block mb-2 text-gray-700 font-medium">
-                                Pasregister
+                                Password
                             </label>
                             <input
                                 type="password"
