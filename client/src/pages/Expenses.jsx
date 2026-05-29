@@ -6,6 +6,7 @@ import axios from 'axios';
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { IoMdArrowBack } from "react-icons/io";
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
     const { serverUrl } = useContext(authDataContext);
@@ -39,11 +40,28 @@ const Expenses = () => {
     }
     return (
         <div className="min-h-screen bg-[#faf7ff] px-6 py-10">
+            <div className="relative flex items-center mb-10">
 
-            <h1 className="text-4xl font-bold text-center mb-10 bg-gradient-to-r from-purple-700 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
-                My Expenses
-            </h1>
+                <button
+                    className="absolute left-0 top-4 text-2xl text-purple-700 hover:text-purple-900 transition"
+                    onClick={() => navigate("/")}
+                >
+                    <IoMdArrowBack />
+                </button>
+                <h1 className="absolute left-1/2 -translate-x-1/2 text-4xl font-bold bg-gradient-to-r from-purple-700 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+                    My Expenses
+                </h1>
 
+
+                <div className="ml-auto">
+                    <button className="bg-purple-600 text-white px-12 py-3 rounded-lg font-bold " onClick={() => {
+                        navigate("/expense/add")
+                    }}>
+                        Add Expense
+                    </button>
+                </div>
+
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 {expenses.map((expense) => (
@@ -59,7 +77,11 @@ const Expenses = () => {
                             <button
                                 className="p-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-700 hover:text-white transition-all duration-300"
                             >
-                                <FaEdit size={18} />
+                                <FaEdit size={18} onClick={() => {
+                                    navigate(`/expense/edit/${expense._id}`, {
+                                        state: expense
+                                    })
+                                }} />
                             </button>
 
                             <button
