@@ -13,11 +13,11 @@ export const signUp=async(req,res)=>{
         let user=await User.create({name,email,password:hashPassword});
         let token=await generateToken(user._id);
         res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    httpOnly: true,
+    secure: "production",
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+});
     res.status(201).json({message:"User created successfully", user});
     }catch(error){
         console.log(error);
@@ -38,10 +38,11 @@ export const login=async(req,res)=>{
         }
         let token=await generateToken(user._id);
         res.cookie("token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure: "production",
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+});axAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({message:"User logged in successfully", user});
         
