@@ -1,15 +1,14 @@
 import React from 'react'
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { userDataContext } from '../context/UserContext';
 const ShowExpenses = () => {
     const navigate = useNavigate();
     // const { serverUrl } = useContext(authDataContext);
-    const user = JSON.parse(
-        localStorage.getItem("user")
-    );
-    const [userData, setUserData] = useState(user);
-    const userId = userData?._id;
+    const { user, setUser } = useContext(userDataContext);
+    // const [userData, setUserData] = useState(user);
+    const userId = user?._id;
+
     return (
         <>
             {userId && (

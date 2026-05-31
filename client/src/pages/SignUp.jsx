@@ -5,9 +5,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { authDataContext } from '../context/AuthContext'
 import { useContext } from 'react'
+import { userDataContext } from '../context/UserContext'
 const SignUp = () => {
     const navigate = useNavigate();
     const { serverUrl } = useContext(authDataContext);
+    const { setUser } = useContext(userDataContext);
     const {
         register,
         handleSubmit,
@@ -32,6 +34,7 @@ const SignUp = () => {
                 "user",
                 JSON.stringify(user)
             );
+            setUser(user);
             alert("Signup successful!");
             navigate("/");
             reset();

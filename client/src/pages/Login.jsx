@@ -4,9 +4,11 @@ import { IoMdArrowBack } from "react-icons/io";
 import axios from 'axios';
 import { authDataContext } from '../context/AuthContext'
 import { useContext } from 'react'
+import { userDataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const navigate = useNavigate();
+    const { setUser } = useContext(userDataContext);
     const {
         register,
         handleSubmit,
@@ -34,6 +36,7 @@ const Login = () => {
                 JSON.stringify(user)
             );
             // localStorage.setItem("user", user);
+            setUser(user);
             alert("Login successful!");
             navigate("/");
             reset();

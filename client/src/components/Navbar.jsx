@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { authDataContext } from '../context/AuthContext'
+import { userDataContext } from '../context/UserContext'
 import { useContext } from 'react'
 const Navbar = () => {
     const navigate = useNavigate()
     const { serverUrl } = useContext(authDataContext);
+    const { setUser } = useContext(userDataContext);
     const user = JSON.parse(
         localStorage.getItem("user")
     );
@@ -19,6 +21,7 @@ const Navbar = () => {
             );
             console.log("SUCCESS RESPONSE:", res.data);
             localStorage.removeItem("user");
+            setUser(null);
             setUserData(null);
             alert("Logout successful!");
         } catch (error) {
